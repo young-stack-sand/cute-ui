@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Utility Apps — Basic vs Character</title>
+<style>
+  :root {
+    --bg: #f4f5f7;
+    --card: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    padding: 32px 16px;
+  }
+  h1 { text-align: center; margin: 0 0 8px; font-size: 28px; }
+  .subtitle { text-align: center; color: var(--muted); margin-bottom: 32px; font-size: 14px; }
+  .row {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .row-label {
+    grid-column: 1 / -1;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+  }
+  .card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    min-height: 320px;
+    display: flex;
+    flex-direction: column;
+  }
+  .card h3 {
+    margin: 0 0 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .card h2 {
+    margin: 0 0 16px;
+    font-size: 20px;
+  }
+
+  /* ---------- TODO BASIC ---------- */
+  .todo-input {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .todo-input input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .todo-input button {
+    padding: 8px 14px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .todo-list { list-style: none; margin: 0; padding: 0; }
+  .todo-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .todo-list li.done { color: var(--muted); text-decoration: line-through; }
+  .todo-list input[type=checkbox] { width: 16px; height: 16px; }
+
+  /* ---------- WEATHER BASIC ---------- */
+  .weather-basic {
+    text-align: center;
+    padding: 10px 0;
+  }
+  .weather-basic .city { font-size: 13px; color: var(--muted); }
+  .weather-basic .temp { font-size: 56px; font-weight: 300; margin: 8px 0; }
+  .weather-basic .cond { font-size: 15px; color: var(--muted); margin-bottom: 20px; }
+  .weather-forecast {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--line);
+    padding-top: 12px;
+  }
+  .weather-forecast div { font-size: 12px; text-align: center; }
+  .weather-forecast .day { color: var(--muted); margin-bottom: 4px; }
+  .weather-forecast .t { font-weight: 600; }
+
+  /* ---------- CALC BASIC ---------- */
+  .calc-screen {
+    background: #111;
+    color: #fff;
+    text-align: right;
+    padding: 18px 14px;
+    border-radius: 10px;
+    font-size: 28px;
+    font-family: "SF Mono", Menlo, monospace;
+    margin-bottom: 12px;
+  }
+  .calc-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .calc-grid button {
+    padding: 14px 0;
+    border: none;
+    border-radius: 8px;
+    background: #e5e7eb;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .calc-grid button.op { background: #fb923c; color: white; }
+  .calc-grid button.eq { background: var(--accent); color: white; }
+
+  /* =============================================
+     CHARACTER CARDS
+     ============================================= */
+
+  /* ---------- TODO CHICKEN ---------- */
+  .chick-card {
+    background: linear-gradient(180deg, #fff7cc 0%, #ffe88a 100%);
+  }
+  .chick-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .chicken {
+    width: 70px;
+    height: 70px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .chicken .body {
+    position: absolute;
+    inset: 10px 5px 0 5px;
+    background: #fff;
+    border: 2px solid #333;
+    border-radius: 50% 50% 45% 45% / 55% 55% 45% 45%;
+  }
+  .chicken .comb {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px;
+    height: 14px;
+    background: #ef4444;
+    border: 2px solid #333;
+    border-radius: 50% 50% 20% 20% / 70% 70% 20% 20%;
+  }
+  .chicken .eye-l, .chicken .eye-r {
+    position: absolute;
+    top: 24px;
+    width: 7px; height: 7px;
+    background: #333;
+    border-radius: 50%;
+  }
+  .chicken .eye-l { left: 22px; }
+  .chicken .eye-r { right: 22px; }
+  .chicken .beak {
+    position: absolute;
+    top: 34px; left: 50%;
+    transform: translateX(-50%);
+    width: 0; height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #f59e0b;
+  }
+  .chicken .foot-l, .chicken .foot-r {
+    position: absolute;
+    bottom: -4px;
+    width: 2px; height: 8px;
+    background: #f59e0b;
+  }
+  .chicken .foot-l { left: 28px; }
+  .chicken .foot-r { right: 28px; }
+  .chick-bubble {
+    background: white;
+    border: 2px solid #333;
+    border-radius: 12px;
+    padding: 6px 10px;
+    font-size: 13px;
+    position: relative;
+  }
+  .chick-bubble::before {
+    content: "";
+    position: absolute;
+    left: -8px; top: 10px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 8px solid #333;
+  }
+  .egg-list { list-style: none; padding: 0; margin: 0; }
+  .egg-list li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 14px;
+  }
+  .egg {
+    width: 18px; height: 22px;
+    background: #fff;
+    border: 2px solid #333;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .egg.hatched {
+    background: #fde68a;
+    position: relative;
+  }
+  .egg.hatched::after {
+    content: "🐥";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+  }
+  .egg-list li.hatched { text-decoration: line-through; color: #92400e; }
+  .chick-add {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .chick-add input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: white;
+    font-size: 13px;
+  }
+  .chick-add button {
+    padding: 6px 10px;
+    border: 2px solid #333;
+    border-radius: 8px;
+    background: #ef4444;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  /* ---------- WEATHER ALIEN ---------- */
+  .alien-card {
+    background: radial-gradient(circle at 50% 30%, #4c1d95 0%, #1e1b4b 100%);
+    color: #e0e7ff;
+    position: relative;
+    overflow: hidden;
+  }
+  .alien-card .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20px 30px, white, transparent),
+      radial-gradient(1px 1px at 60px 80px, white, transparent),
+      radial-gradient(1px 1px at 120px 50px, white, transparent),
+      radial-gradient(2px 2px at 200px 120px, white, transparent),
+      radial-gradient(1px 1px at 250px 40px, white, transparent),
+      radial-gradient(1px 1px at 300px 160px, white, transparent),
+      radial-gradient(1px 1px at 340px 90px, white, transparent);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .alien-card h3, .alien-card h2 { color: #c7d2fe; position: relative; }
+  .alien {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 10px;
+    position: relative;
+  }
+  .alien .head {
+    position: absolute;
+    inset: 10px 5px 15px 5px;
+    background: radial-gradient(circle at 35% 30%, #86efac, #22c55e 70%, #15803d);
+    border-radius: 50%;
+    border: 2px solid #166534;
+  }
+  .alien .eye {
+    position: absolute;
+    top: 38px;
+    width: 22px; height: 28px;
+    background: #0f172a;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .alien .eye.l { left: 28px; }
+  .alien .eye.r { right: 28px; }
+  .alien .eye::after {
+    content: "";
+    position: absolute;
+    top: 4px; left: 4px;
+    width: 6px; height: 6px;
+    background: white;
+    border-radius: 50%;
+  }
+  .alien .mouth {
+    position: absolute;
+    top: 72px; left: 50%;
+    transform: translateX(-50%);
+    width: 20px; height: 10px;
+    border: 2px solid #166534;
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    background: #15803d;
+  }
+  .alien .antenna {
+    position: absolute;
+    top: -2px; left: 50%;
+    transform: translateX(-50%);
+    width: 3px; height: 14px;
+    background: #166534;
+  }
+  .alien .antenna::after {
+    content: "";
+    position: absolute;
+    top: -8px; left: -5px;
+    width: 12px; height: 12px;
+    background: #fde047;
+    border: 2px solid #166534;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #fde047;
+  }
+  .alien-info { text-align: center; position: relative; }
+  .alien-info .say {
+    font-size: 12px;
+    font-style: italic;
+    color: #a5b4fc;
+  }
+  .alien-info .temp {
+    font-size: 44px;
+    font-weight: 300;
+    margin: 4px 0;
+  }
+  .alien-info .cond { font-size: 13px; color: #c7d2fe; }
+  .alien-forecast {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(199, 210, 254, 0.2);
+    position: relative;
+  }
+  .alien-forecast div { text-align: center; font-size: 12px; }
+  .alien-forecast .day { color: #a5b4fc; margin-bottom: 2px; }
+  .alien-forecast .emoji { font-size: 18px; }
+
+  /* ---------- CALC POKEMON ---------- */
+  .poke-card {
+    background: linear-gradient(180deg, #fecaca 0%, #ef4444 50%, white 50%, white 100%);
+    border: 4px solid #1a1a1a;
+    padding: 16px;
+  }
+  .poke-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .pokeball-mini {
+    width: 24px; height: 24px;
+    background: linear-gradient(180deg, red 50%, white 50%);
+    border: 2px solid #1a1a1a;
+    border-radius: 50%;
+    position: relative;
+  }
+  .pokeball-mini::after {
+    content: "";
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 6px; height: 6px;
+    background: white;
+    border: 2px solid #1a1a1a;
+    border-radius: 50%;
+  }
+  .poke-char {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .pika {
+    width: 60px; height: 60px;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .pika .ear-l, .pika .ear-r {
+    position: absolute;
+    top: -8px;
+    width: 10px; height: 24px;
+    background: #fde047;
+    border: 2px solid #1a1a1a;
+  }
+  .pika .ear-l {
+    left: 10px;
+    transform: rotate(-20deg);
+    border-radius: 50% 50% 10% 10%;
+  }
+  .pika .ear-l::after, .pika .ear-r::after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    width: 100%; height: 8px;
+    background: #1a1a1a;
+    border-radius: 50% 50% 0 0;
+  }
+  .pika .ear-r {
+    right: 10px;
+    transform: rotate(20deg);
+    border-radius: 50% 50% 10% 10%;
+  }
+  .pika .face {
+    position: absolute;
+    inset: 10px 2px 2px 2px;
+    background: #fde047;
+    border: 2px solid #1a1a1a;
+    border-radius: 50%;
+  }
+  .pika .cheek-l, .pika .cheek-r {
+    position: absolute;
+    top: 36px;
+    width: 10px; height: 10px;
+    background: #ef4444;
+    border-radius: 50%;
+  }
+  .pika .cheek-l { left: 6px; }
+  .pika .cheek-r { right: 6px; }
+  .pika .eye-l, .pika .eye-r {
+    position: absolute;
+    top: 24px;
+    width: 7px; height: 7px;
+    background: #1a1a1a;
+    border-radius: 50%;
+  }
+  .pika .eye-l { left: 16px; }
+  .pika .eye-r { right: 16px; }
+  .pika .eye-l::after, .pika .eye-r::after {
+    content: "";
+    position: absolute;
+    top: 1px; left: 1px;
+    width: 2px; height: 2px;
+    background: white;
+    border-radius: 50%;
+  }
+  .pika .mouth {
+    position: absolute;
+    top: 38px; left: 50%;
+    transform: translateX(-50%);
+    width: 6px; height: 3px;
+    border: 1.5px solid #1a1a1a;
+    border-top: none;
+    border-radius: 0 0 50% 50%;
+  }
+  .poke-screen {
+    flex: 1;
+    background: #d1fae5;
+    border: 2px solid #1a1a1a;
+    border-radius: 6px;
+    padding: 10px 12px;
+    text-align: right;
+    font-family: "Press Start 2P", "SF Mono", monospace;
+    font-size: 20px;
+    color: #065f46;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .poke-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .poke-grid button {
+    padding: 10px 0;
+    border: 2px solid #1a1a1a;
+    border-radius: 50%;
+    background: white;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+    aspect-ratio: 1;
+  }
+  .poke-grid button.op {
+    background: #fde047;
+    color: #1a1a1a;
+  }
+  .poke-grid button.eq {
+    background: #ef4444;
+    color: white;
+  }
+  .poke-grid button.zero { grid-column: span 2; border-radius: 20px; aspect-ratio: auto; }
+
+  .footer-note {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 32px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Utility App UI — Basic & Character</h1>
+<p class="subtitle">ToDo Tracker · Weather · Calculator</p>
+
+<!-- ========== ROW 1: TODO ========== -->
+<div class="row">
+  <div class="row-label">1. ToDo Tracker</div>
+
+  <div class="card">
+    <h3>Basic</h3>
+    <h2>My Tasks</h2>
+    <div class="todo-input">
+      <input type="text" placeholder="Add a task...">
+      <button>Add</button>
+    </div>
+    <ul class="todo-list">
+      <li><input type="checkbox"> Buy groceries</li>
+      <li class="done"><input type="checkbox" checked> Finish report</li>
+      <li><input type="checkbox"> Call dentist</li>
+      <li><input type="checkbox"> Water plants</li>
+      <li class="done"><input type="checkbox" checked> Reply to emails</li>
+    </ul>
+  </div>
+
+  <div class="card chick-card">
+    <h3>Character — Chicken</h3>
+    <h2>Cluck List</h2>
+    <div class="chick-top">
+      <div class="chicken">
+        <div class="comb"></div>
+        <div class="body"></div>
+        <div class="eye-l"></div>
+        <div class="eye-r"></div>
+        <div class="beak"></div>
+        <div class="foot-l"></div>
+        <div class="foot-r"></div>
+      </div>
+      <div class="chick-bubble">Lay an egg for each task!</div>
+    </div>
+    <ul class="egg-list">
+      <li><span class="egg"></span> Buy groceries</li>
+      <li class="hatched"><span class="egg hatched"></span> Finish report</li>
+      <li><span class="egg"></span> Call dentist</li>
+      <li><span class="egg"></span> Water plants</li>
+      <li class="hatched"><span class="egg hatched"></span> Reply to emails</li>
+    </ul>
+    <div class="chick-add">
+      <input type="text" placeholder="Lay a new egg...">
+      <button>Cluck!</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ROW 2: WEATHER ========== -->
+<div class="row">
+  <div class="row-label">2. Weather</div>
+
+  <div class="card">
+    <h3>Basic</h3>
+    <h2>Weather</h2>
+    <div class="weather-basic">
+      <div class="city">Seoul, KR</div>
+      <div class="temp">18°</div>
+      <div class="cond">Partly Cloudy</div>
+    </div>
+    <div class="weather-forecast">
+      <div><div class="day">MON</div><div class="t">19°</div></div>
+      <div><div class="day">TUE</div><div class="t">21°</div></div>
+      <div><div class="day">WED</div><div class="t">17°</div></div>
+      <div><div class="day">THU</div><div class="t">15°</div></div>
+      <div><div class="day">FRI</div><div class="t">20°</div></div>
+    </div>
+  </div>
+
+  <div class="card alien-card">
+    <div class="stars"></div>
+    <h3>Character — Round Alien</h3>
+    <h2>Zorp's Forecast</h2>
+    <div class="alien">
+      <div class="antenna"></div>
+      <div class="head"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
+    </div>
+    <div class="alien-info">
+      <div class="say">"Beep! Earth-sky status:"</div>
+      <div class="temp">18°</div>
+      <div class="cond">~ puffy cloud day ~</div>
+    </div>
+    <div class="alien-forecast">
+      <div><div class="day">MON</div><div class="emoji">☁️</div><div>19°</div></div>
+      <div><div class="day">TUE</div><div class="emoji">☀️</div><div>21°</div></div>
+      <div><div class="day">WED</div><div class="emoji">🌧️</div><div>17°</div></div>
+      <div><div class="day">THU</div><div class="emoji">🌧️</div><div>15°</div></div>
+      <div><div class="day">FRI</div><div class="emoji">⛅</div><div>20°</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ROW 3: CALCULATOR ========== -->
+<div class="row">
+  <div class="row-label">3. Calculator</div>
+
+  <div class="card">
+    <h3>Basic</h3>
+    <h2>Calculator</h2>
+    <div class="calc-screen">1,234</div>
+    <div class="calc-grid">
+      <button>C</button><button>±</button><button>%</button><button class="op">÷</button>
+      <button>7</button><button>8</button><button>9</button><button class="op">×</button>
+      <button>4</button><button>5</button><button>6</button><button class="op">−</button>
+      <button>1</button><button>2</button><button>3</button><button class="op">+</button>
+      <button>0</button><button>0</button><button>.</button><button class="eq">=</button>
+    </div>
+  </div>
+
+  <div class="card poke-card">
+    <h3>Character — Pokémon Style</h3>
+    <div class="poke-top">
+      <div class="pokeball-mini"></div>
+      <h2 style="margin:0;font-size:16px;">PikaCalc</h2>
+    </div>
+    <div class="poke-char">
+      <div class="pika">
+        <div class="ear-l"></div>
+        <div class="ear-r"></div>
+        <div class="face"></div>
+        <div class="eye-l"></div>
+        <div class="eye-r"></div>
+        <div class="cheek-l"></div>
+        <div class="cheek-r"></div>
+        <div class="mouth"></div>
+      </div>
+      <div class="poke-screen">1,234</div>
+    </div>
+    <div class="poke-grid">
+      <button>C</button><button>±</button><button>%</button><button class="op">÷</button>
+      <button>7</button><button>8</button><button>9</button><button class="op">×</button>
+      <button>4</button><button>5</button><button>6</button><button class="op">−</button>
+      <button>1</button><button>2</button><button>3</button><button class="op">+</button>
+      <button class="zero">0</button><button>.</button><button class="eq">=</button>
+    </div>
+  </div>
+</div>
+
+<p class="footer-note">Static mockups — no interactivity.</p>
+
+</body>
+</html>
